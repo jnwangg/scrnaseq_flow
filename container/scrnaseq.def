@@ -1,0 +1,32 @@
+Bootstrap: library
+from: ubuntu:22.04
+
+%files
+    # Conda environment with necessary dependencies.
+    rnaseqenv.yml
+
+%environment
+    export LC_ALL=C.UTF-8
+    export PATH="opt/conda/bin:$PATH"
+    export PATH="/opt/conda/envs/$(head -1 rnaseqenv.yml | cut -d' ' -f2)/bin:$PATH"
+
+%post
+    apt-get -y update
+    apt-get install -y wget python3 python3-pip
+    apt-get clean
+
+    # Install conda.
+    mkdir -p /opt
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh -f -b -p /opt/conda
+    . /opt/conda/etc/profile.d/conda.sh
+
+    # Create rnaseqenv environment.
+    /opt/conda/bin/conda env create -f rnaseqenv.yml
+
+    # Install kb-tools.
+    pip3 install kb-python
+
+    # Automatically activate environment at runtime.
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> $SINGULARITY_ENVIRONMENT
+    echo "conda activate rnaseqenv" >> $SINGULARITY_ENVIRONMENT
