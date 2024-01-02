@@ -6,7 +6,9 @@ workflow PARSE {
     main:
     samplesheet
         .splitCsv( header:true )
-        .map { sample -> parseRow(sample) }
+        .map { parseRow( it ) }
+        .map { metaInfo, reads -> [ metaInfo, reads ] }
+        .set { reads }
 
     emit:
     sample
