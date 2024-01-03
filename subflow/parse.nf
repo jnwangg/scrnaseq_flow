@@ -4,14 +4,14 @@ workflow PARSE {
 
     // Samplesheet: sample, read_1, read_2, whitelist
     main:
-    samplesheet
+    Channel.fromPath(samplesheet)
         .splitCsv( header:true )
         .map { parseRow( it ) }
         .map { metaInfo, reads -> [ metaInfo, reads ] }
         .set { reads }
 
     emit:
-    sample
+    reads
 }
 
 def parseRow (LinkedHashMap row) {
