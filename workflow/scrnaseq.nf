@@ -42,8 +42,13 @@ workflow SCRNASEQ {
     ch_t2g   = KB_REF.out.t2g
 
     // Trim parsed reads with cutadapt.
-    CUTADAPT ( ch_reads )
-    ch_trimmed = CUTADAPT.out.reads
+    if (!params.skip_trim) {
+        CUTADAPT ( ch_reads )
+        ch_trimmed = CUTADAPT.out.reads
+    }
+    else {
+        ch_trimmed = ch_reads
+    }
 
     // Align trimmed reads with kb count.
     KB_COUNT (
