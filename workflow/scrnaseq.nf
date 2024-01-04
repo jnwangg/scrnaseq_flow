@@ -8,6 +8,14 @@
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Import helper functions from nf-validation.
+include { paramsSummaryLog } from 'plugin/nf-validation'
+
+// Print summary of pipeline parameters.
+log.info paramsSummaryLog(workflow)
+
 // Check for valid file inputs.
 def fileList = [
     params.input,
@@ -15,6 +23,8 @@ def fileList = [
     params.gtf
 ]
 for (param in fileList) { if (param) { file( param, checkIfExists: true ) } }
+
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Import subworkflows.
 include { PARSE } from '../subflow/parse'
@@ -24,10 +34,14 @@ include { CUTADAPT } from '../modules/cutadapt'
 include { KB_COUNT } from '../modules/kb_count'
 include { KB_REF   } from '../modules/kb_ref'
 
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 // Define general channels.
 ch_input  = file(params.input)
 ch_genome = file(params.genome)
 ch_gtf    = file(params.gtf)
+
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 workflow SCRNASEQ {
     // Parse input samplesheet.
@@ -41,7 +55,7 @@ workflow SCRNASEQ {
     ch_index = KB_REF.out.index
     ch_t2g   = KB_REF.out.t2g
 
-    // Trim parsed reads with cutadapt.
+    // If requested, trim parsed reads with cutadapt.
     if (!params.skip_trim) {
         CUTADAPT ( ch_reads )
         ch_trimmed = CUTADAPT.out.reads
