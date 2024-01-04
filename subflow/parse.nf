@@ -34,8 +34,8 @@ def parseRow (LinkedHashMap row) {
     metaInfo.id = row.sample
 
     // If a whitelist exists, include it as metadata.
-    if (file(row.whitelist).exists()) {
-        metaInfo.whitelist = file(row.whitelist)
+    if (row.whitelist) {
+        metaInfo.whitelist = row.whitelist
     }
 
     // Store both metadata and reads.
