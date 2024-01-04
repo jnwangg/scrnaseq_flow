@@ -1,8 +1,10 @@
 process KB_COUNT {
+    // Associate each execution with sample id.
     tag "${metaInfo.id}"
 
-    conda "bioconda::kb-python=0.28.0"
-    container "biocontainers/kb-python:0.28.0--pyhdfd78af_0"
+    // Process dependencies when using conda or container profiles.
+    conda "bioconda::kb-python=0.27.2"
+    container "biocontainers/kb-python:0.27.2--pyhdfd78af_0"
 
     input:
     tuple val(metaInfo), path(reads)
@@ -15,6 +17,7 @@ process KB_COUNT {
     path "*.count/*/*.mtx"              , emit: matrix
 
     script:
+    // Define user arguments, sample id, whitelisted barcodes (if any), and memory allocation.
     def userArgs = task.ext.args ?: ''
     def sample   = "${metaInfo.id}"
     def barcodes = metaInfo.whitelist ? "-w ${metaInfo.whitelist}" : ''
@@ -24,7 +27,7 @@ process KB_COUNT {
         -i $index \\
         -g $t2g \\
         -x $tech \\
-        -o "${sample}.count" \\
+        -o ${sample}.count \\
         $barcodes \\
         -t $task.cpus \\
         -m ${memory}G \\
