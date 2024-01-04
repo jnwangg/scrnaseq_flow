@@ -2,9 +2,10 @@
 
 /*
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  IMPLICIT WORKFLOW: Main.nf
+//  IMPLICIT WORKFLOW: main.nf
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  Initializes the pipeline. Calls the main workflow.
+//  Initializes the pipeline by calling the main workflow. Prints a help
+//  message if requested, and validates all parameters.
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
