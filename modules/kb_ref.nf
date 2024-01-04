@@ -3,8 +3,8 @@ process KB_REF {
     tag "${fasta}"
 
     // Process dependencies when using conda or container profiles.
-    conda "bioconda::kb-python=0.28.0"
-    container "biocontainers/kb-python:0.28.0--pyhdfd78af_0"
+    conda "bioconda::kb-python=0.27.2"
+    container "biocontainers/kb-python:0.27.2--pyhdfd78af_0"
 
     input:
     path fasta
