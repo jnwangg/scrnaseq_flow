@@ -1,3 +1,21 @@
+/*
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  WORKFLOW: Single-cell RNA Sequencing
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  Main pipeline workflow. Validates inputs and defines channels. Then,
+//  calls modules for samplesheet parsing, trimming (with cutadapt), and
+//  alignment + counting of reads (with kallisto-bustools).
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+// Check for valid file inputs.
+def fileList = [
+    params.input,
+    params.genome,
+    params.gtf
+]
+for (param in fileList) { if (param) { file( param, checkIfExists: true ) } }
+
 // Import subworkflows.
 include { PARSE } from '../subflow/parse'
 
@@ -31,7 +49,7 @@ workflow SCRNASEQ {
     KB_COUNT (
         ch_trimmed,
         ch_index,
-        ch_t2g
+        ch_t2g,
         params.protocol
     )
 }
