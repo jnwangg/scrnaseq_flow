@@ -25,7 +25,7 @@ from: ubuntu:22.04
     /opt/conda/bin/conda env create -f rnaseqenv.yml
 
     # Install kb-tools.
-    pip3 install kb-python
+    pip3 install kb-python==0.27.2
 
     # Automatically activate environment at runtime.
     echo ". /opt/conda/etc/profile.d/conda.sh" >> $SINGULARITY_ENVIRONMENT
