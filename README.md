@@ -49,7 +49,7 @@ For most use cases, the pipeline expects the following parameters:
 nextflow run jnwangg/scrnaseq_flow \
   --input    <path/to/samplesheet.csv> \
   --outdir   <path/to/output> \
-  --genome   <path/to/genome.fasta> \
+  --genome   <path/to/genome.fa> \
   --gtf      <path/to/genes.gtf> \
   --protocol 10XV3 \
   --profile  docker \
@@ -58,7 +58,7 @@ To see detailed usage instructions, run the pipeline with `--help true`.
 
 ## 📝 Samplesheets
 > [!NOTE]
-> Samplesheets may contained data that is single-end, paired-end, or a mix of both! The pipeline automatically detects whether a second read is provided, and will adjust trimming and alignment appropriately.
+> Samplesheets may contain data that is single-end, paired-end, or a mix of both! The pipeline automatically detects whether a second read is provided, and will adjust trimming and alignment appropriately.
 
 Before running `scrnaseq_flow`, prepare a samplesheet with your input data. All samplesheets must have four named columns:
 | Column | Description |
@@ -79,6 +79,9 @@ CTRL_ID2,SRR12345_S5_L002_R1.fastq.gz,,
 ```
 
 ## ⚙️ Configuration
+> [!WARNING]
+> When specifying paths to FASTQs, samplesheets, or other files while using Docker/Singularity, it may be necessary to explicitly mount their directories for the pipeline to successfully locate them. For Singularity, use `singularity.runOptions` to specify these directories. For Docker, use `docker.runOptions`.
+
 Configuration of `scrnaseq_flow` for your compute environment is highly encouraged. Nextflow supports three primary methods for customization:
 - Custom parameter files: `-params-file <file.yaml>`
 - Custom configuration files: `-c <file.config>`
@@ -92,7 +95,7 @@ genome: '/home/data/GRCh37.fa'
 cutadapt_args: '--poly-a -m 20 --max-n 0.10'
 <...>
 ```
-***Configuration files*** are how you modify pipeline settings. These may be the compute resources used by each process (memory, cpus), pipeline executors (SLURM, AWS), custom containers, or any other desired changes. A configuration file `local.config` may look like:
+***Configuration files*** are how you modify pipeline settings. These may be the compute resources used by each process (memory, CPUs), pipeline executors (SLURM, AWS), custom containers, or any other desired changes. A configuration file `local.config` may look like:
 ```nextflow
 process.executor = 'awsbatch'
 process {
