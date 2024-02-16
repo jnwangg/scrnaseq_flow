@@ -10,17 +10,17 @@
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '14px', 'fontFamily': "Inter"}}}%%
 flowchart LR
-  source("<b>Input:</b>
+  source("Input:
          samplesheet.csv
          genome.fa
          genes.gtf")
-  trim("<b>Trim reads:</b>
+  trim("Trim reads:
        cutadapt")
-  index("<b>Generate index:</b>
+  index("Generate index:
         kb ref")
-  aligner("<b>Generate count matrix:</b>
+  aligner("Generate count matrix:
           kb count")
-  output("<b>Output:</b>
+  output("Output:
          sample1.mtx
          sample2.mtx
          sample3.mtx
